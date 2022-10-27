@@ -392,3 +392,24 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 // Blank page.
 //PAGEBREAK!
 // Blank page.
+
+int protect(void *addr, int len){
+  char *a, *last;
+  pte_t *pte;
+	if ((uint)addr + len >= myproc()->sz)//check if within address space
+		return -1;
+  a = (char*)PGROUNDDOWN((uint)addr);
+  last = (char*)PGROUNDDOWN(((uint)addr) + len - 1);
+  //uint pa = V2P(addr);//corresponding physical address
+  for(;;){
+        if((pte = walkpgdir(myproc()->pgdir, a, 0)) == 0)
+                      return -1;
+    *pte = *pte & ~PTE_W;
+    if(a == last)
+      break;
+    a += PGSIZE;
+  }
+  //update lcr3?
+  return 0;
+}
+

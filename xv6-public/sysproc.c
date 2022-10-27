@@ -89,3 +89,19 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+
+int //added by Mary and Ollie
+sys_mprotect(void){
+  void *addr;
+  int len;
+   
+  //char *a = (char*)PGROUNDDOWN((uint)addr);
+  if (argptr(0, (char**)&addr, sizeof(void*)) || (argint(1, &len) <= 0)){//get args
+    return -1;
+  }
+  else if ((uint) addr % PGSIZE != 0 || len <= 0)
+	  return -1;
+  int success = protect(addr, len);
+  return success;
+}
