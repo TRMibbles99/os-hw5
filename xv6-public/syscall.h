@@ -21,3 +21,4 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 #define SYS_mprotect 22 //added by Mary and Ollie
+#define SYS_munprotect 23 //added by Mary and Ollie
